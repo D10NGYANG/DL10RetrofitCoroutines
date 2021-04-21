@@ -1,6 +1,7 @@
 package com.dlong.dl10retrofitcoroutineslib
 
 import android.util.Log
+import com.squareup.moshi.Moshi
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -30,7 +31,13 @@ internal class DLResponseCall<S : Any?> constructor(
 
                 val body = response.body()
                 val code = response.code()
-                val error = response.errorBody()?.string()
+                val errorBody = response.errorBody()?.string()
+
+                val moshiBuilder = Moshi.Builder().build()
+                val adapter = moshiBuilder.adapter(DLResponse.Error::class.java)
+                val error = try {
+                    adapter.fromJson(errorBody)
+                } catch (e: Exception) { null }
 
                 if (response.isSuccessful) {
                     callback.onResponse(

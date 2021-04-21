@@ -1,4 +1,11 @@
 package com.dlong.dl10retrofitcoroutineslib
+import androidx.annotation.Keep
+
+import com.squareup.moshi.JsonClass
+
+import com.squareup.moshi.Json
+import java.io.Serializable
+
 
 /**
  * 请求结果
@@ -8,5 +15,15 @@ package com.dlong.dl10retrofitcoroutineslib
 data class DLResponse<T : Any?>(
     val body: T?,
     val code: Int,
-    val errorBody: String?
-)
+    val errorBody: Error?
+) {
+    @JsonClass(generateAdapter = true)
+    data class Error(
+        @Json(name = "message")
+        var message: String = "",
+        @Json(name = "status")
+        var status: Int = 0,
+        @Json(name = "timestamp")
+        var timestamp: String = ""
+    ): Serializable
+}
