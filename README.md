@@ -15,7 +15,7 @@ allprojects {
 2. Add the dependency:
 ```gradle
 dependencies {
-        implementation 'com.github.D10NGYANG:DL10RetrofitCoroutines:1.0'
+        implementation 'com.github.D10NGYANG:DL10RetrofitCoroutines:1.2'
 }
 ```
 3. 在Retrofit中使用
@@ -42,8 +42,14 @@ interface MainApi {
 5. 网络请求
 ```kotlin
 GlobalScope.launch {
-    val result = mainApi.searchUser("1234567").body
-    // 如果result==null表示请求出错
+    val result = mainApi.searchUser("1234567")
+    // 请求结果
+    result.body
+    // 请求结果码，请求发不出去，值为-1
+    request.code
+    // 请求错误信息
+    request.errorBody
+    // 如果request.code==-1表示请求出错
     Log.e("结果", result.toString())
 }
 ```
