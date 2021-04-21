@@ -2,6 +2,7 @@ package com.dlong.retrofitcoroutines
 
 import com.dlong.dl10retrofitcoroutineslib.DLResponseAdapterFactory
 import com.dlong.retrofitcoroutines.api.MainApi
+import com.dlong.retrofitcoroutines.api.MainApiWorker
 import com.dlong.retrofitcoroutines.bean.BaseResult1Adapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 /**
@@ -42,6 +44,10 @@ class HLHttpManager {
         retrofit!!.create(MainApi::class.java)
     }
 
+    val mainApiWorker: MainApiWorker by lazy {
+        MainApiWorker(retrofit!!.create(MainApi::class.java))
+    }
+
     /**
      * 初始化管理器，必须先初始化才能正常使用
      * @param isDebug Boolean 是否打开打印，true：开启打印；false：关闭打印；默认值：false
@@ -54,9 +60,9 @@ class HLHttpManager {
                     connectTimeout: Long = 10L, readTimeout: Long = 10L, writeTimeout: Long = 10L) {
         // 初始化接收数据格式化工具
         val moshi = Moshi.Builder()
-                .add(BaseResult1Adapter())
-                .add(KotlinJsonAdapterFactory())
-                .build()
+            .add(BaseResult1Adapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
         // 初始化拦截器
         val logInterceptor = HttpLoggingInterceptor()
         if (isDebug) {
@@ -68,21 +74,22 @@ class HLHttpManager {
         }
         // 初始化网络请求客户端
         val client = OkHttpClient.Builder()
-                // 连接超时
-                .connectTimeout(connectTimeout, TimeUnit.SECONDS)
-                // 读取超时
-                .readTimeout(readTimeout, TimeUnit.SECONDS)
-                // 写入超时
-                .writeTimeout(writeTimeout, TimeUnit.SECONDS)
-                // 设置拦截器
-                .addInterceptor(logInterceptor)
-                .build()
+            // 连接超时
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+            // 读取超时
+            .readTimeout(readTimeout, TimeUnit.SECONDS)
+            // 写入超时
+            .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+            // 设置拦截器
+            .addInterceptor(logInterceptor)
+            .build()
         // 初始化网络请求工具
         retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addCallAdapterFactory(DLResponseAdapterFactory())
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .client(client)
-                .build()
+            .baseUrl(baseUrl)
+            .addCallAdapterFactory(DLResponseAdapterFactory())
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(client)
+            .build()
     }
 }

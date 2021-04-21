@@ -11,11 +11,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        HLHttpManager.instance().initManager(true)
+        HLHttpManager.instance().initManager(true, "https://eim-test-api.bds100.com/")
 
         GlobalScope.launch {
-            val result = HLHttpManager.instance().mainApi.searchUser("13106673302").body
-            Log.e("测试", result.toString())
+            val result = HLHttpManager.instance().mainApiWorker
+                .appLogin(this@MainActivity, "11012345", "111111", "111111")
+            Log.e("测试1", result)
         }
     }
 }
