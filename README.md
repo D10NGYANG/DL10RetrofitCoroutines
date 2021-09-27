@@ -15,19 +15,19 @@ allprojects {
 2. Add the dependency:
 ```gradle
 dependencies {
-        implementation 'com.github.D10NGYANG:DL10RetrofitCoroutines:1.2'
+    implementation 'com.github.D10NGYANG:DL10RetrofitCoroutines:1.3'
 }
 ```
 3. 在Retrofit中使用
 ```kotlin
 // 初始化网络请求工具
 retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        // 增加回复处理器
-        .addCallAdapterFactory(DLResponseAdapterFactory())
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .client(client)
-        .build()
+    .baseUrl(baseUrl)
+    // 增加回复处理器
+    .addCallAdapterFactory(DLResponseAdapterFactory())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .client(client)
+    .build()
 ```
 4. 在接口中使用
 ```kotlin
