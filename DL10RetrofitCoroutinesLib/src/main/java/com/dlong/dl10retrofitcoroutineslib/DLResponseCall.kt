@@ -59,7 +59,7 @@ internal class DLResponseCall<S : Any?> constructor(
             override fun onFailure(call: Call<S>, throwable: Throwable) {
                 callback.onResponse(
                     this@DLResponseCall,
-                    Response.success(DLResponse(null, -1, null))
+                    Response.success(DLResponse(null, -1, DLResponse.Error(message = throwable.toString())))
                 )
                 Log.e(TAG, "Response is failed, $throwable")
             }
