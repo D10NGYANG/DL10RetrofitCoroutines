@@ -15,7 +15,7 @@ allprojects {
 2. Add the dependency:
 ```gradle
 dependencies {
-    implementation 'com.github.D10NGYANG:DL10RetrofitCoroutines:1.3'
+    implementation 'com.github.D10NGYANG:DL10RetrofitCoroutines:1.4'
 }
 ```
 3. 在Retrofit中使用

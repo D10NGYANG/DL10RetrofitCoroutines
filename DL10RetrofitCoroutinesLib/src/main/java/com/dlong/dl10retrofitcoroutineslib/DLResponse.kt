@@ -1,8 +1,6 @@
 package com.dlong.dl10retrofitcoroutineslib
-import androidx.annotation.Keep
 
 import com.squareup.moshi.JsonClass
-
 import com.squareup.moshi.Json
 import java.io.Serializable
 
@@ -15,7 +13,7 @@ import java.io.Serializable
 data class DLResponse<T : Any?>(
     val body: T?,
     val code: Int,
-    val errorBody: Error?
+    val errorBody: Error
 ) {
     @JsonClass(generateAdapter = true)
     data class Error(

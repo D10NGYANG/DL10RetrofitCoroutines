@@ -1,6 +1,8 @@
 package com.dlong.dl10retrofitcoroutineslib
 
 import android.util.Log
+import com.d10ng.datelib.curTime
+import com.d10ng.datelib.toDateStr
 import com.squareup.moshi.Moshi
 import okhttp3.Request
 import okio.Timeout
@@ -35,9 +37,11 @@ internal class DLResponseCall<S : Any?> constructor(
 
                 val moshiBuilder = Moshi.Builder().build()
                 val adapter = moshiBuilder.adapter(DLResponse.Error::class.java)
-                val error = try {
-                    adapter.fromJson(errorBody)
-                } catch (e: Exception) { null }
+                val error: DLResponse.Error = try {
+                    adapter.fromJson(errorBody)!!
+                } catch (e: Exception) {
+                    DLResponse.Error(e.toString(), code, curTime.toDateStr())
+                }
 
                 if (response.isSuccessful) {
                     callback.onResponse(
